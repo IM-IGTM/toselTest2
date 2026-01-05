@@ -112,16 +112,20 @@ window.onload = function () {
     { q: "맑은", a: "clear", type: 2 },
 
     // 3유형: 그림과 문장보고 맞추기 (이미지 O)
-    { q: "My family loves to _______.\n여행하다", a: "travel", type: 3 },
-    { q: "Let's feel the fresh _______.\n공기", a: "air", type: 3 },
-    { q: "There is a dog _______ the chair.\n아래에", a: "under", type: 3 },
-    { q: "Open the _______, please.\n문", a: "door", type: 3 },
-    { q: "I eat _______ for breakfast.\n빵", a: "bread", type: 3 },
-    { q: "I _______ a gift to my friend.\n주다", a: "give", type: 3 },
-    { q: "Take your _______.\n코트", a: "coat", type: 3 },
-    { q: "Can I drink a _______ of milk?\n컵", a: "cup", type: 3 },
-    { q: "_______ your hands.\n박수", a: "clap", type: 3 },
-    { q: "She wants to be a ______.\n가수", a: "singer", type: 3 },
+    { q: "Her dream is to be a _______.\n농부", a: "farmer", type: 3 },
+    { q: "I'm _______ to meet you.\n기쁜", a: "glad", type: 3 },
+    { q: "Look at that _______ jumping!\n돌고래", a: "dolphin", type: 3 },
+    {
+      q: "That is the tallest _______ in my city.\n건물",
+      a: "building",
+      type: 3,
+    },
+    { q: "He is a famous _______.", a: "musician", type: 3 },
+    { q: "How much is this _______?", a: "flute", type: 3 },
+    { q: "We _______ about our new teacher.", a: "talk", type: 3 },
+    { q: "How many _______ are there?", a: "children", type: 3 },
+    { q: "_______ some things for school.", a: "bring", type: 3 },
+    { q: "The cat is under the _______.", a: "table", type: 3 },
   ];
 
   // -----------------------------
@@ -138,6 +142,7 @@ window.onload = function () {
       title: item.q,
       options: options,
       correctIndex: options.indexOf(item.a),
+      type: item.type,
       img: item.type === 1 || item.type === 3 ? `img/${item.a}.png` : null,
     };
   });
@@ -223,6 +228,17 @@ window.onload = function () {
     questionLabel.innerHTML = q.title.replace(/\n/g, "<br>");
 
     const imgTag = document.getElementById("questionImage");
+
+    if (questionLabel) {
+      if (q.type === 1) {
+        // 유형 1(그림보고 맞추기)인 경우 텍스트 라벨을 - 로 표시
+        questionLabel.textContent = "-";
+      } else {
+        // 그 외 유형은 기존처럼 텍스트 출력 (줄바꿈 지원)
+        questionLabel.innerHTML = q.title.replace(/\n/g, "<br>");
+      }
+    }
+
     if (imgTag) {
       if (q.img) {
         imgTag.src = q.img;
