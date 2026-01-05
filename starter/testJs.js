@@ -112,7 +112,7 @@ window.onload = function () {
     { q: "맑은", a: "clear", type: 2 },
 
     // 3유형: 그림과 문장보고 맞추기 (이미지 O)
-    { q: "Her dream is to be a _______.", a: "farmer", type: 3 },
+    { q: "Her dream is to be a ________.", a: "farmer", type: 3 },
     { q: "I'm _______ to meet you.", a: "glad", type: 3 },
     { q: "Look at that _______ jumping!", a: "dolphin", type: 3 },
     {
