@@ -53,7 +53,7 @@ window.onload = function () {
     { q: "야채, 채소", a: "vegetable", type: 1 },
     { q: "시간", a: "hour", type: 1 },
     { q: "늦은", a: "late", type: 1 },
-    { q: "함께, 같이", b: "together", type: 1 },
+    { q: "함께, 같이", a: "together", type: 1 },
     { q: "공간, 장소", a: "space", type: 1 },
     { q: "방, -실", a: "room", type: 1 },
     { q: "(미식) 축구", a: "football", type: 1 },
@@ -112,30 +112,27 @@ window.onload = function () {
     { q: "맑은", a: "clear", type: 2 },
 
     // 3유형: 그림과 문장보고 맞추기 (이미지 O)
-    { q: "Her dream is to be a _______.\n농부", a: "farmer", type: 3 },
-    { q: "I'm _______ to meet you.\n기쁜", a: "glad", type: 3 },
-    { q: "Look at that _______ jumping!\n돌고래", a: "dolphin", type: 3 },
-    {
-      q: "That is the tallest _______ in my city.\n건물",
-      a: "building",
-      type: 3,
-    },
-    { q: "He is a famous _______.\n음악가", a: "musician", type: 3 },
-    { q: "How much is this _______?\n플루트", a: "flute", type: 3 },
-    { q: "We _______ about our new teacher.\n이야기하다", a: "talk", type: 3 },
-    { q: "How many _______ are there?\n아이들", a: "children", type: 3 },
-    { q: "_______ some things for school.\n가져오다", a: "bring", type: 3 },
-    { q: "The cat is under the _______.\n식탁", a: "table", type: 3 },
+    { q: "My family loves to _______.\n여행하다", a: "travel", type: 3 },
+    { q: "Let's feel the fresh _______.\n공기", a: "air", type: 3 },
+    { q: "There is a dog _______ the chair.\n아래에", a: "under", type: 3 },
+    { q: "Open the _______, please.\n문", a: "door", type: 3 },
+    { q: "I eat _______ for breakfast.\n빵", a: "bread", type: 3 },
+    { q: "I _______ a gift to my friend.\n주다", a: "give", type: 3 },
+    { q: "Take your _______.\n코트", a: "coat", type: 3 },
+    { q: "Can I drink a _______ of milk?\n컵", a: "cup", type: 3 },
+    { q: "_______ your hands.\n박수", a: "clap", type: 3 },
+    { q: "She wants to be a ______.\n가수", a: "singer", type: 3 },
   ];
 
   // -----------------------------
-  // 2. 최종 문제 데이터 구성 (셔플 및 오답 자동 생성)
+  // 2. 최종 문제 데이터 구성 (셔플 및 오답 자동 생성 - 사지선다)
   // -----------------------------
   const allAnswerPool = rawData.map((d) => d.a);
   const questions = rawData.map((item) => {
+    // 사지선다를 위해 오답 3개만 추출 (정답 포함 총 4개)
     const wrongOnes = shuffle(
       allAnswerPool.filter((ans) => ans !== item.a)
-    ).slice(0, 4);
+    ).slice(0, 3);
     const options = shuffle([item.a, ...wrongOnes]);
     return {
       title: item.q,
@@ -187,6 +184,7 @@ window.onload = function () {
 
   const timerSpan = document.getElementById("timer-sec");
   const questionLabel = document.getElementById("questionLabel");
+  // 사지선다에 맞춰 버튼 선택 (HTML에 버튼이 4개만 있다고 가정하거나 상위 4개만 사용)
   const buttons = document.querySelectorAll(".choice-row button");
 
   function startTimer() {
@@ -216,6 +214,12 @@ window.onload = function () {
 
     selectedIndex = null;
     buttons.forEach((btn) => btn.classList.remove("selected"));
+
+    // 사지선다이므로 만약 HTML에 5개 이상의 버튼이 있다면 5번째 이후는 숨김 처리
+    buttons.forEach((btn, idx) => {
+      if (idx >= 4) btn.style.display = "none";
+    });
+
     questionLabel.innerHTML = q.title.replace(/\n/g, "<br>");
 
     const imgTag = document.getElementById("questionImage");
@@ -232,7 +236,10 @@ window.onload = function () {
     }
 
     q.options.forEach((opt, idx) => {
-      if (buttons[idx]) buttons[idx].textContent = idx + 1 + ". " + opt;
+      if (buttons[idx]) {
+        buttons[idx].style.display = "block";
+        buttons[idx].textContent = idx + 1 + ". " + opt;
+      }
     });
     startTimer();
   }
@@ -268,9 +275,9 @@ window.onload = function () {
   }
 
   // -----------------------------
-  // 5. 키보드 및 클릭 이벤트
+  // 5. 키보드 및 클릭 이벤트 (사지선다 매핑)
   // -----------------------------
-  const keyToIndex = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4 };
+  const keyToIndex = { 1: 0, 2: 1, 3: 2, 4: 3 }; // 5번 제거
   document.addEventListener("keydown", (e) => {
     if (currentQuestion >= questions.length) return;
 
@@ -283,16 +290,18 @@ window.onload = function () {
     if (idx !== undefined) {
       selectedIndex = idx;
       buttons.forEach((btn, i) => {
-        i === idx
-          ? btn.classList.add("selected")
-          : btn.classList.remove("selected");
+        if (i === idx) {
+          btn.classList.add("selected");
+        } else {
+          btn.classList.remove("selected");
+        }
       });
     }
   });
 
   document.addEventListener("click", (e) => {
     if (currentQuestion < questions.length && !e.target.closest(".resultOk")) {
-      alert("⚠️ 키보드(1~5 및 Space)를 사용해 주세요!");
+      alert("⚠️ 키보드(1~4 및 Space)를 사용해 주세요!");
     }
   });
 
