@@ -112,11 +112,11 @@ window.onload = function () {
     { q: "맑은", a: "clear", type: 2 },
 
     // 3유형: 그림과 문장보고 맞추기 (이미지 O)
-    { q: "Her dream is to be a _______.\n농부", a: "farmer", type: 3 },
-    { q: "I'm _______ to meet you.\n기쁜", a: "glad", type: 3 },
-    { q: "Look at that _______ jumping!\n돌고래", a: "dolphin", type: 3 },
+    { q: "Her dream is to be a _______.", a: "farmer", type: 3 },
+    { q: "I'm _______ to meet you.", a: "glad", type: 3 },
+    { q: "Look at that _______ jumping!", a: "dolphin", type: 3 },
     {
-      q: "That is the tallest _______ in my city.\n건물",
+      q: "That is the tallest _______ in my city.",
       a: "building",
       type: 3,
     },
@@ -148,7 +148,7 @@ window.onload = function () {
   });
 
   // -----------------------------
-  // 3. 정답 테이블 생성 (결과 확인용)
+  // 3. 정답 테이블 생성 (결과 확인용) - 수정
   // -----------------------------
   const tbody = document.querySelector(".answer-table tbody");
   if (tbody) {
