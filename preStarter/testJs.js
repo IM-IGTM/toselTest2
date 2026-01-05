@@ -134,10 +134,10 @@ window.onload = function () {
   // 2. 최종 시험 문제 배열 생성 (자동 보기 구성)
   // -----------------------------
   const questions = rawData.map((item) => {
-    // 현재 정답 제외하고 4개 랜덤 추출
+    // 사지선다를 위해 현재 정답 제외하고 3개만 랜덤 추출
     const wrongOnes = shuffle(
       allAnswerPool.filter((ans) => ans !== item.a)
-    ).slice(0, 4);
+    ).slice(0, 3);
     const options = shuffle([item.a, ...wrongOnes]);
 
     return {
@@ -175,7 +175,6 @@ window.onload = function () {
         const titleTd = document.createElement("td");
         titleTd.id = "title-q" + n;
         titleTd.className = "question-title-cell";
-        // 테이블엔 한글 뜻만 간략히 표시 (줄바꿈 제거)
         titleTd.textContent = questions[n - 1].title.split("\n")[0];
         titleRow.appendChild(titleTd);
 
@@ -205,7 +204,7 @@ window.onload = function () {
     document.querySelector(".two"),
     document.querySelector(".three"),
     document.querySelector(".four"),
-    document.querySelector(".five"),
+    // 사지선다이므로 .five 제외
   ];
   const timerSpan = document.getElementById("timer-sec");
 
@@ -246,18 +245,15 @@ window.onload = function () {
     selectedIndex = null;
     buttons.forEach((btn) => btn && btn.classList.remove("selected"));
 
-    // 문제 텍스트 출력
     if (questionLabel) {
       questionLabel.innerHTML = q.title.replace(/\n/g, "<br>");
     }
 
-    // 이미지 출력 로직
     const imgTag = document.getElementById("questionImage");
     if (imgTag) {
       if (q.img) {
         imgTag.src = q.img;
         imgTag.style.display = "block";
-        // 이미지 로딩 실패 시 (파일 없을 때) 숨김 처리
         imgTag.onerror = () => {
           imgTag.style.display = "none";
         };
@@ -266,7 +262,10 @@ window.onload = function () {
       }
     }
 
-    // 보기 버튼 텍스트
+    // 사지선다이므로 만약 HTML에 5번 버튼이 있다면 숨김 처리
+    const btnFive = document.querySelector(".five");
+    if (btnFive) btnFive.style.display = "none";
+
     q.options.forEach((opt, idx) => {
       if (buttons[idx]) buttons[idx].textContent = idx + 1 + ". " + opt;
     });
@@ -302,7 +301,7 @@ window.onload = function () {
   // -----------------------------
   // 6. 이벤트 및 초기화
   // -----------------------------
-  const keyToIndex = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4 };
+  const keyToIndex = { 1: 0, 2: 1, 3: 2, 4: 3 }; // 5번 제외
 
   document.addEventListener("keydown", function (e) {
     if (currentQuestion >= questions.length) return;
@@ -310,7 +309,7 @@ window.onload = function () {
     if (e.code === "Space") {
       e.preventDefault();
       if (selectedIndex === null) {
-        alert("먼저 1~5 중 하나를 선택하세요.");
+        alert("먼저 1~4 중 하나를 선택하세요.");
         return;
       }
       handleAnswer(selectedIndex);
@@ -329,7 +328,6 @@ window.onload = function () {
     }
   });
 
-  // 결과보기 버튼
   window.resultOk = function () {
     const pw = prompt("결과를 보려면 비밀번호를 입력하세요.");
     if (pw !== "1234") {
@@ -344,7 +342,6 @@ window.onload = function () {
     document.getElementById("result-correct").textContent = correctCount;
     document.getElementById("result-total").textContent = questions.length;
 
-    // PDF 생성
     const element = document.querySelector(".answer-panel");
     setTimeout(() => {
       html2canvas(element).then((canvas) => {
