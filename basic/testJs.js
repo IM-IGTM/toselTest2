@@ -242,11 +242,11 @@ window.onload = function () {
 
   const allAnswers = rawData.map((item) => item.a);
 
-  // 최종 문제 배열 생성
+  // 최종 문제 배열 생성 (사지선다: 정답 1개 + 오답 3개)
   const questions = rawData.map((item) => {
     const wrongOptions = shuffle(allAnswers.filter((a) => a !== item.a)).slice(
       0,
-      4
+      3
     );
     const options = shuffle([item.a, ...wrongOptions]);
     return {
@@ -312,7 +312,7 @@ window.onload = function () {
     document.querySelector(".two"),
     document.querySelector(".three"),
     document.querySelector(".four"),
-    document.querySelector(".five"),
+    // .five는 사지선다에서 제외
   ];
   const timerSpan = document.getElementById("timer-sec");
 
@@ -363,6 +363,10 @@ window.onload = function () {
     q.options.forEach((opt, idx) => {
       if (buttons[idx]) buttons[idx].textContent = idx + 1 + ". " + opt;
     });
+    // 사지선다이므로 만약 HTML에 5번 버튼이 있다면 숨겨야 할 수도 있습니다.
+    const btnFive = document.querySelector(".five");
+    if (btnFive) btnFive.style.display = "none";
+
     startTimer();
   }
 
@@ -387,14 +391,14 @@ window.onload = function () {
   // -----------------------------
   // 6. 이벤트 리스너 (키보드 및 결과)
   // -----------------------------
-  const keyToIndex = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4 };
+  const keyToIndex = { 1: 0, 2: 1, 3: 2, 4: 3 }; // 5번 제외
   document.addEventListener("keydown", (e) => {
     if (currentQuestion >= questions.length) return;
 
     if (e.code === "Space") {
       e.preventDefault();
       if (selectedIndex === null) {
-        alert("먼저 1~5 중 하나를 선택하세요.");
+        alert("먼저 1~4 중 하나를 선택하세요.");
         return;
       }
       handleAnswer(selectedIndex);
@@ -416,7 +420,7 @@ window.onload = function () {
   document.addEventListener("click", (e) => {
     if (currentQuestion >= questions.length || e.target.closest(".resultOk"))
       return;
-    alert("⚠️ 경고: 키보드(1~5 및 Space)만 사용 가능합니다!");
+    alert("⚠️ 경고: 키보드(1~4 및 Space)만 사용 가능합니다!");
   });
 
   window.resultOk = function () {
