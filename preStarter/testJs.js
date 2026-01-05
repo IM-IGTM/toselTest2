@@ -115,16 +115,16 @@ window.onload = function () {
     { q: "갈색", a: "brown", type: 2 },
 
     // 3유형: 문장+그림보고 맞추기 (이미지 O)
-    { q: "My family loves to _______.\n여행하다", a: "travel", type: 3 },
-    { q: "Let's feel the fresh _______.\n공기", a: "air", type: 3 },
-    { q: "There is a dog _______ the chair.\n아래에", a: "under", type: 3 },
-    { q: "Open the _______, please.\n문", a: "door", type: 3 },
-    { q: "I eat _______ for breakfast.\n빵", a: "bread", type: 3 },
-    { q: "I _______ a gift to my friend.\n주다", a: "give", type: 3 },
-    { q: "Take your _______.\n코트", a: "coat", type: 3 },
-    { q: "Can I drink a _______ of milk?\n컵", a: "cup", type: 3 },
-    { q: "_______ your hands.\n박수", a: "clap", type: 3 },
-    { q: "She wants to be a ______.\n가수", a: "singer", type: 3 },
+    { q: "My family loves to _______.", a: "travel", type: 3 },
+    { q: "Let's feel the fresh _______.", a: "air", type: 3 },
+    { q: "There is a dog _______ the chair.", a: "under", type: 3 },
+    { q: "Open the _______, please.", a: "door", type: 3 },
+    { q: "I eat _______ for breakfast.", a: "bread", type: 3 },
+    { q: "I _______ a gift to my friend.", a: "give", type: 3 },
+    { q: "Take your _______.", a: "coat", type: 3 },
+    { q: "Can I drink a _______ of milk?", a: "cup", type: 3 },
+    { q: "_______ your hands.", a: "clap", type: 3 },
+    { q: "She wants to be a ______.", a: "singer", type: 3 },
   ];
 
   // 모든 정답 리스트 (오답 추출용)
