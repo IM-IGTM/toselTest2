@@ -144,6 +144,7 @@ window.onload = function () {
       title: item.q,
       options: options,
       correctIndex: options.indexOf(item.a),
+      type: item.type,
       // 1유형과 3유형만 이미지 경로 생성, 2유형은 null
       img: item.type === 1 || item.type === 3 ? `img/${item.a}.png` : null,
     };
@@ -250,6 +251,17 @@ window.onload = function () {
     }
 
     const imgTag = document.getElementById("questionImage");
+
+    if (questionLabel) {
+      if (q.type === 1) {
+        // 유형 1(그림보고 맞추기)인 경우 텍스트 라벨을 - 로 표시
+        questionLabel.textContent = "-";
+      } else {
+        // 그 외 유형은 기존처럼 텍스트 출력 (줄바꿈 지원)
+        questionLabel.innerHTML = q.title.replace(/\n/g, "<br>");
+      }
+    }
+
     if (imgTag) {
       if (q.img) {
         imgTag.src = q.img;
